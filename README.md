@@ -1,8 +1,6 @@
 # dotfiles
 
-do NOT dox me.
-
-> inb4 'mpv ~/documents/.homework/cunny.mp4'
+do NOT dox
 
 ## Neat trick:
 ```bash
