@@ -1,50 +1,50 @@
-# /etc/skel/.bashrc
-#
-# This file is sourced by all *interactive* bash shells on startup,
-# including some apparently interactive shells such as scp and rcp
-# that can't tolerate any output.  So make sure this doesn't display
-# anything or bad things will happen !
+# .bashrc
 
-
-# Test for an interactive shell.  There is no need to set anything
-# past this point for scp and rcp, and it's important to refrain from
-# outputting anything in those cases.
-if [[ $- != *i* ]] ; then
-	# Shell is non-interactive.  Be done now!
-	return
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
 fi
 
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
 
-# Put your fun stuff here.
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
 
-# texlive
-export PATH="/usr/local/texlive/2021/bin/x86_64-linux/:$PATH"
+# User specific aliases and functions
+if [ -d ~/.bashrc.d ]; then
+	for rc in ~/.bashrc.d/*; do
+		if [ -f "$rc" ]; then
+			. "$rc"
+		fi
+	done
+fi
 
-# cmd
-alias rm="rm -i"
-loveyou()
-{
-    echo "Love you too."
-    sudo shutdown -h now
-}
-git-acp()
-{
-    git add .
-    git commit -m "$1"
-    git push -u origin master
+unset rc
 
-}
-alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
-ntpupdate()
-{
-    sudo ntpdate sg.pool.ntp.org
-}
+export PS1="\[\033]0;\u@\h:\w\007\]\[\033[01;32m\]\u@\h\[\033[01;34m\] \w $\[\033[00m\] "
+
 liveclock()
 {
     while true; do echo -ne "`date`\r"; done
 }
 
-# dynamic fonts
+logout()
+{
+	sudo pkill -u hitagi
+}
+
+poweroff()
+{
+    sudo shutdown -h now
+}
+
+
+# fonts
 alias font="printf '\e]710;%s\007'"
 
 alias Tamzen-9=Tamzen5x9r
@@ -74,9 +74,3 @@ alias Tamzen8x16b='font -misc-tamzen-bold-r-normal--16-108-100-100-c-80-iso8859-
 alias Tamzen-20=Tamzen10x20r
 alias Tamzen10x20r='font -misc-tamzen-medium-r-normal--20-145-100-100-c-100-iso8859-1'
 alias Tamzen10x20b='font -misc-tamzen-bold-r-normal--20-145-100-100-c-100-iso8859-1'
-
-#emacsclient
-export ALTERNATE_EDITOR=""
-export EDITOR="emacsclient -t"                  # $EDITOR opens in terminal
-export VISUAL="emacsclient -c -a emacs"         # $VISUAL opens in GUI mode
-alias cdir='source cdir.sh'

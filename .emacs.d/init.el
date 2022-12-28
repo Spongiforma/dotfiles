@@ -7,6 +7,8 @@
 ;(add-to-list 'package-archives '("marmelade" . "http://marmalade-repo.org/packages/"));
 (package-initialize)
 
+;; (setq use-package-always-ensure t)
+
 ;; use-package
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -55,7 +57,7 @@
   :config
   (dashboard-setup-startup-hook)
   (setq dashboard-banner-logo-title "Abandon all hope, ye who enter here")
-  (setq dashboard-startup-banner "/home/spongiforma/pictures/nice.png")
+(setq dashboard-startup-banner "~/.emacs.d/nice.png")
   (setq dashboard-center-content t)
   (setq dashboard-set-init-info t))
 ;;(setq dashboard-set-heading-icons t)
@@ -73,21 +75,22 @@
 
 (use-package gruvbox-theme)
 (use-package powerline)
-;;(load-theme 'gruvbox-dark-medium)
+;; (load-theme 'gruvbox-dark-medium)
 
 
 ;; Font
-(add-to-list 'bdf-directory-list "/home/spongiforma/.local/share/fonts/")
+;(add-to-list 'bdf-directory-list "/home/hitagi/.fonts/")
 
-(setq default-frame-alist '((tamzen . "-misc-tamzen-medium-r-normal--16-*-100-100-c-80-iso8859-1")))
-(add-to-list 'default-frame-alist '(font . "-misc-tamzen-medium-r-normal--16-*-100-100-c-80-iso8859-1"))
+;(setq default-frame-alist '((tamzen . "-Misc-tamzen-normal-normal-normal-*-16-*-*-*-c-80-iso10646-1")))
+;(add-to-list 'default-frame-alist '(font . "-Misc-tamzen-normal-normal-normal-*-16-*-*-*-c-80-iso10646-1"))
 
 ;; (defun please-work ()
 ;;   (set-face-attribute 'default nil :background "black" :foreground "white"
 ;;                       :font "-misc-tamzen-medium-r-normal--16-*-100-100-c-80-iso8859-1" :height 120))
 
+(set-frame-font "Tamzen 13" nil t)
 
-(set-frame-font "-misc-tamzen-medium-r-normal--16-*-116-100-c-80-iso8859-1")
+;(set-frame-font "-Misc-tamzen-normal-normal-normal-*-16-*-*-*-c-80-iso10646-1")
 ;; (set-language-environment 'utf-8)
 ;; (setq locale-coding-system 'utf-8)
 ;; ;; set the default encoding system
@@ -368,14 +371,6 @@ When called without a prefix argument, kill just the current buffer
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq c-basic-offset 4)
-(use-package autopair
-  :diminish autopair-mode
-  :init
-  (eval-when-compile
-    ;; Silence missing function warnings
-    (declare-function autopair-global-mode "autopair.el"))
-  :config
-  (autopair-global-mode t))
 
 ;; cool packages
 (use-package flycheck
@@ -386,7 +381,7 @@ When called without a prefix argument, kill just the current buffer
 
 
 ;; Helm
-(use-package helm-config)
+;; (use-package helm-config)
 (use-package helm
   :bind (("M-x" . helm-M-x)
          ("M-y" . helm-show-kill-ring)
@@ -403,12 +398,12 @@ When called without a prefix argument, kill just the current buffer
    helm-autoresize-min-height 30
    helm-autoresize-max-height 40
    ))
-(use-package helm-files
-  :bind ("C-x C-f" . helm-find-files))
-(use-package helm-mode
-  :diminish helm-mode
-  :config
-  (helm-mode 1))
+ (use-package helm-files
+   :bind ("C-x C-f" . helm-find-files))
+;; (use-package helm-mode
+;;   :diminish helm-mode
+;;   :config
+;;   (helm-mode 1))
 
 ;; Company
 (use-package company
@@ -436,10 +431,11 @@ When called without a prefix argument, kill just the current buffer
   (slime-setup '(slime-fancy slime-company)))
 
 (add-hook 'lisp-mode-hook 'slime-mode)
+(use-package rainbow-delimiters)
 (add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
+;(load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "sbcl")
 (use-package slime-company
   :after (slime company)
@@ -459,8 +455,8 @@ When called without a prefix argument, kill just the current buffer
   (add-hook 'lispy-mode-hook #'lispyville-mode))
 
 ;; Graphviz
-(use-package graphviz-dot-mode)
-(add-hook 'graphviz-mode-hook 'display-line-numbers-mode)
+;(use-package graphviz-dot-mode)
+;(add-hook 'graphviz-mode-hook 'display-line-numbers-mode)
 
 ;; Python
 (use-package jedi
@@ -531,14 +527,14 @@ When called without a prefix argument, kill just the current buffer
 
 
 ;;; w3m
-(use-package w3m
-  :defer t)
-(require 'w3m-load)
+;(use-package w3m
+;  :defer t)
+;(require 'w3m-load)
 
-(setq browse-url-browser-function 'w3m-browse-url)
-(autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
+;(setq browse-url-browser-function 'w3m-browse-url)
+;(autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
 ;; optional keyboard short-cut
-(global-set-key "\C-xm" 'browse-url-at-point)
+;(global-set-key "\C-xm" 'browse-url-at-point)
 
 ;;(define-key w3m-mode-map [mouse-2] 'w3m-mouse-view-this-url-new-session)
 
@@ -559,28 +555,24 @@ When called without a prefix argument, kill just the current buffer
 ;;					      w3m-mode-map))
 ;;		      0)))))
 ;; Org-mode
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-;;(add-hook 'org-mode-hook 'org-bullets-mode)
+(use-package org-bullets)
+;; (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(add-hook 'org-mode-hook 'org-bullets-mode)
 ;;(setq inhibit-compacting-font-caches t)
 ;;(add-hook 'org-mode-hook 'org-startup-with-inline-images)
 (add-hook 'org-mode-hook #'abbrev-mode)
 (setq org-image-actual-width nil)
 (add-hook 'org-mode-hook #'org-indent-mode)
 ; org-capture
-(setq org-default-notes-file (concat org-directory "/notes.org"))
+;(setq org-default-notes-file (concat org-directory "/notes.org"))
 (global-set-key (kbd "C-c c") 'org-capture)
-; reveal.js
-(use-package ox-reveal)
-(setq org-reveal-root "file:///home/spongiforma/source/reveal.js-4.1.1")
-(setq org-reveal-klipsify-src t)
 
 
 
 ;;; Latex
 (add-hook 'latex-mode-hook 'display-line-numbers-mode)
-(setenv "PATH" (concat "/usr/local/texlive/2020/bin/x86_64-linux/:" (getenv "PATH")))
-(setq exec-path (append '("/usr/local/texlive/2020/bin/x86_64-linux/") exec-path))
+;(setenv "PATH" (concat "/usr/local/texlive/2020/bin/x86_64-linux/:" (getenv "PATH")))
+;(setq exec-path (append '("/usr/local/texlive/2020/bin/x86_64-linux/") exec-path))
 (setq org-latex-create-formula-image-program 'dvipng)
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.8))
 
@@ -588,15 +580,14 @@ When called without a prefix argument, kill just the current buffer
 
 
 ;;; IRC
-(setq erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#erc" "#gentoo")
-                                    ("installgentoo.com" "#installgentoo")))
+;(setq erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#erc" "#gentoo")
+;                                    ("installgentoo.com" "#installgentoo")))
 
 ;; Magit
 (use-package magit
   :defer t)
 ;email-client
 
-;(setq user-full-name "Spongiforma Squarepantsii")
 ;(setq user-mail-address "nameo@large.com")
 
 ;(setq smtpmail-default-smtp-server "Domain name of macine with SMTP server")
